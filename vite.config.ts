@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
   return {
     // Relative base: works on a user site (user.github.io) and on any project
     // path (user.github.io/any-repo-name) without editing this file.
-    base: './',
+    base: '/olesia-portfolio',
     plugins: [react(), siteUrlPlugin(siteUrl)],
     build: {
       target: 'es2020',
