@@ -1,0 +1,122 @@
+.about__grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .about__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+.about__photo {
+  position: relative;
+  margin: 0;
+  max-width: 460px;
+}
+
+.about__photo::before {
+  content: '';
+  position: absolute;
+  inset: 18px -18px -18px 18px;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-lg);
+  opacity: 0.55;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.about__photo:hover::before {
+  transform: translate(-6px, -6px);
+}
+
+.about__photo img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 622 / 791;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.about__photo figcaption {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+}
+
+.about__lead {
+  font-size: clamp(1.25rem, 1rem + 0.9vw, 1.625rem);
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.about__p {
+  margin-top: 1.25rem;
+  max-width: 62ch;
+  font-size: var(--fs-lead);
+  color: var(--ink-2);
+}
+
+.about__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 640px) {
+  .about__facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.fact {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 20px 18px;
+  background: var(--surface);
+}
+
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.fact dd {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.fact__value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 1.8rem + 2vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.fact:first-child .fact__value {
+  color: var(--accent);
+}
+
+.fact__detail {
+  order: 2;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted);
+}

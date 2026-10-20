@@ -1,0 +1,87 @@
+/* ─────────────────────────────────────────────
+   Design tokens — one place for the visual system
+   ───────────────────────────────────────────── */
+:root {
+  /* Color — warm white editorial base, ink, one controlled accent */
+  --bg: #faf8f6;
+  --bg-alt: #f3efec;
+  --surface: #ffffff;
+  --ink: #0e0e10;
+  --ink-2: #3d3b40;
+  --muted: #6e6a72; /* 5.0:1 on --bg */
+  --faint: #a39fa6; /* decorative only */
+  --line: #e7e2de;
+  --line-strong: #d6d0cb;
+  --ghost: #eeeae7;
+
+  --accent: #ff3f6c; /* large text, glows, dots */
+  --accent-strong: #c8174a; /* small text on light surfaces, ≥4.7:1 */
+  --accent-display: #f53662; /* large headings on light/alt backgrounds, ≥3.2:1 */
+  --accent-soft: #ffe3ea;
+  --accent-glow: rgb(255 63 108 / 0.35);
+
+  --dark: #0c0a10;
+  --dark-2: #16111a;
+  --dark-3: #221a26;
+  --on-dark: #f4eef1;
+  --on-dark-muted: #a39fa6;
+  --dark-line: rgb(255 255 255 / 0.1);
+
+  /* Type */
+  --font-display: 'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --fs-micro: 0.6875rem; /* 11px mono labels */
+  --fs-small: 0.875rem;
+  --fs-body: 1.0625rem; /* 17px */
+  --fs-lead: clamp(1.0625rem, 0.95rem + 0.45vw, 1.25rem);
+  --fs-h3: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+  --fs-h2: clamp(2.25rem, 1.3rem + 3.6vw, 4.5rem);
+  --fs-display: clamp(2.75rem, 1.2rem + 5.4vw, 6.25rem);
+
+  --tracking-tight: -0.035em;
+  --tracking-label: 0.18em;
+
+  /* Spacing (8px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --section-y: clamp(4rem, 2.4rem + 4.4vw, 7.5rem);
+  --gutter: clamp(1rem, 0.4rem + 3.2vw, 4.5rem);
+  --container: 1320px;
+
+  /* Shape */
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgb(20 10 20 / 0.06), 0 2px 8px -2px rgb(20 10 20 / 0.06);
+  --shadow: 0 1px 2px rgb(20 10 20 / 0.05), 0 12px 32px -14px rgb(20 10 20 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(20 10 20 / 0.04), 0 30px 60px -24px rgb(20 10 20 / 0.28);
+  --shadow-accent: 0 12px 30px -10px rgb(255 63 108 / 0.55);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur: 320ms;
+  --dur-slow: 700ms;
+
+  --nav-h: 76px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --nav-h: 64px;
+  }
+}
