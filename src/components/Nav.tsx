@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent } from 'react'
 import { asset, experience, nav, profile, projects, resumes } from '../data/content'
-import { useScrollSpy } from '../hooks/useScrollSpy'
+import { Link, isActive, navigate } from '../router'
 import { useMagnetic } from '../hooks/useMagnetic'
-import { useReducedMotion } from '../hooks/useMediaQuery'
 import { ArrowIcon, ArrowUpRight, CloseIcon, DownloadIcon, LinkedInIcon, MailIcon } from './Icons'
 import './nav.css'
 
@@ -13,9 +12,9 @@ const ids: string[] = nav.map((n) => n.id)
 function MenuPreview({ id }: { id: NavId }) {
   switch (id) {
     case 'home':
-      return <img className="mprev__img mprev__img--portrait" src={asset('hero/hero-clean-700.webp')} alt="" />
+      return <img className="mprev__img mprev__img--wide" src={asset('hero/hero-desk-1000.webp')} alt="" />
     case 'about':
-      return <img className="mprev__img" src={asset('images/olesia-photo.webp')} alt="" />
+      return <img className="mprev__img" src={asset('images/olesia-portrait-480.webp')} alt="" />
     case 'experience':
       return (
         <ul className="mprev__list">
@@ -32,7 +31,7 @@ function MenuPreview({ id }: { id: NavId }) {
         <ul className="mprev__list">
           {projects.map((p) => (
             <li key={p.id}>
-              <b>{p.name}</b>
+              <b>{p.short}</b>
               <span>{p.status}</span>
             </li>
           ))}
@@ -40,24 +39,6 @@ function MenuPreview({ id }: { id: NavId }) {
       )
     case 'studio':
       return <img className="mprev__img" src={asset('videos/spill-05.webp')} alt="" />
-    case 'skills':
-      return (
-        <ul className="mprev__chips">
-          {['IT audit', 'Controls & risk', 'Business analysis', 'QA', 'SQL', 'Python', 'Canva', 'CapCut'].map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
-      )
-    case 'journey':
-      return (
-        <p className="mprev__route">
-          <span>Ukraine</span>
-          <ArrowIcon size={16} />
-          <span>Poland</span>
-          <ArrowIcon size={16} />
-          <span>USA</span>
-        </p>
-      )
     case 'contact':
       return (
         <p className="mprev__contact">
@@ -68,9 +49,7 @@ function MenuPreview({ id }: { id: NavId }) {
   }
 }
 
-export function Nav() {
-  const active = useScrollSpy(ids)
-  const reduced = useReducedMotion()
+export function Nav({ path, onDark = false }: { path: string; onDark?: boolean }) {
   const [scrolled, setScrolled] = useState(false)
   const [progress, setProgress] = useState(0)
   const [open, setOpen] = useState(false)
@@ -81,7 +60,10 @@ export function Nav() {
   const menuBtnRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
-  const activeIndex = Math.max(0, ids.indexOf(active))
+  const activeIndex = Math.max(
+    0,
+    nav.findIndex((n) => isActive(path, n.to)),
+  )
   const activeItem = nav[activeIndex]
 
   useEffect(() => {
@@ -93,7 +75,7 @@ export function Nav() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [path])
 
   const openMenu = (from?: HTMLElement | null) => {
     const el = from ?? menuBtnRef.current
@@ -111,7 +93,12 @@ export function Nav() {
     if (returnFocus) menuBtnRef.current?.focus({ preventScroll: true })
   }, [])
 
-  // Lock page scroll, Escape closes, focus the first link when opened
+  // Close the menu whenever the page changes (e.g. Back button).
+  useEffect(() => {
+    setOpen(false)
+  }, [path])
+
+  // Lock page scroll, Escape closes, focus the current page's link when opened
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -134,9 +121,9 @@ export function Nav() {
   // Keep keyboard focus inside the open menu
   const trapFocus = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     if (e.key !== 'Tab' || !panelRef.current) return
-    const items = Array.from(
-      panelRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
-    ).filter((el) => el.offsetParent !== null)
+    const items = Array.from(panelRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter(
+      (el) => el.offsetParent !== null,
+    )
     if (!items.length) return
     const first = items[0]
     const last = items[items.length - 1]
@@ -149,36 +136,45 @@ export function Nav() {
     }
   }
 
-  const go = (id: string) => (e: ReactMouseEvent) => {
+  const go = (to: string) => (e: ReactMouseEvent) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return
     e.preventDefault()
     closeMenu(false)
-    // Wait for the scroll lock to lift, then glide to the section
-    window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
-      history.replaceState(null, '', `#${id}`)
-    }, 60)
+    // Let the scroll lock lift before the page changes.
+    window.setTimeout(() => navigate(to), 40)
   }
 
   const ring = 2 * Math.PI * 15
 
   return (
     <>
-      <header className={`nav${scrolled ? ' is-scrolled' : ''}`}>
+      <header className={`nav${scrolled ? ' is-scrolled' : ''}${onDark ? ' nav--on-dark' : ''}`}>
         <div className="nav__inner container">
-          <a href="#home" className="brand" aria-label="Olesia Dmytrush — back to top">
+          <Link to="/" className="brand" aria-label="Olesia Dmytrush — home">
             <span className="brand__line" aria-hidden="true" />
             <span className="brand__name">
               {profile.firstName} <b>{profile.lastName}</b>
             </span>
-          </a>
+          </Link>
+
+          <nav className="nav__links" aria-label="Main">
+            <ul>
+              {nav.slice(1).map((item) => {
+                const current = isActive(path, item.to)
+                return (
+                  <li key={item.id}>
+                    <Link to={item.to} className={current ? 'is-current' : undefined} aria-current={current ? 'page' : undefined}>
+                      {item.label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
 
           <div className="nav__actions">
-            <button
-              type="button"
-              className="nav__now"
-              onClick={(e) => openMenu(e.currentTarget)}
-            >
-              <span className="sr-only">Current section: </span>
+            <button type="button" className="nav__now" onClick={(e) => openMenu(e.currentTarget)}>
+              <span className="sr-only">Current page: </span>
               <svg className="nav__ring" viewBox="0 0 36 36" aria-hidden="true">
                 <circle cx="18" cy="18" r="15" />
                 <circle cx="18" cy="18" r="15" style={{ strokeDasharray: ring, strokeDashoffset: ring * (1 - progress) }} />
@@ -190,15 +186,15 @@ export function Nav() {
               <span className="sr-only"> — open menu</span>
             </button>
 
-            <a ref={ctaRef} href="#contact" className="btn btn--primary btn--sm nav__cta">
+            <Link ref={ctaRef} to="/contact" className="btn btn--primary btn--sm nav__cta">
               Let’s connect
               <span className="btn__orb" aria-hidden="true">
                 <ArrowIcon size={15} />
               </span>
-            </a>
-            <a href="#contact" className="nav__mail" aria-label="Contact Olesia">
+            </Link>
+            <Link to="/contact" className="nav__mail" aria-label="Contact Olesia">
               <MailIcon size={18} />
-            </a>
+            </Link>
 
             <button
               ref={menuBtnRef}
@@ -249,26 +245,29 @@ export function Nav() {
         </div>
 
         <div className="mnav__body container">
-          <nav className="mnav__nav" aria-label="Sections">
+          <nav className="mnav__nav" aria-label="Pages">
             <ol className="mnav__list" onMouseLeave={() => setHovered(activeItem.id)}>
-              {nav.map((item, i) => (
-                <li key={item.id} style={{ '--i': i } as CSSProperties} className={hovered === item.id ? 'is-hovered' : undefined}>
-                  <a
-                    href={`#${item.id}`}
-                    className={`mnav__link${active === item.id ? ' is-current' : ''}`}
-                    aria-current={active === item.id ? 'location' : undefined}
-                    onClick={go(item.id)}
-                    onMouseEnter={() => setHovered(item.id)}
-                    onFocus={() => setHovered(item.id)}
-                  >
-                    <span className="mnav__num">0{i + 1}</span>
-                    <span className="mnav__label" data-text={item.menuLabel}>
-                      {item.menuLabel}
-                    </span>
-                    <span className="mnav__sub">{item.sub}</span>
-                  </a>
-                </li>
-              ))}
+              {nav.map((item, i) => {
+                const current = isActive(path, item.to)
+                return (
+                  <li key={item.id} style={{ '--i': i } as CSSProperties} className={hovered === item.id ? 'is-hovered' : undefined}>
+                    <a
+                      href={`#${item.to}`}
+                      className={`mnav__link${current ? ' is-current' : ''}`}
+                      aria-current={current ? 'page' : undefined}
+                      onClick={go(item.to)}
+                      onMouseEnter={() => setHovered(item.id)}
+                      onFocus={() => setHovered(item.id)}
+                    >
+                      <span className="mnav__num">0{i + 1}</span>
+                      <span className="mnav__label" data-text={item.menuLabel}>
+                        {item.menuLabel}
+                      </span>
+                      <span className="mnav__sub">{item.sub}</span>
+                    </a>
+                  </li>
+                )
+              })}
               <li style={{ '--i': nav.length } as CSSProperties} className="mnav__resume">
                 <button
                   type="button"
@@ -323,19 +322,6 @@ export function Nav() {
           </span>
         </div>
       </div>
-
-      {/* Large screens: section rail */}
-      <nav className={`rail${activeIndex === 0 ? ' is-hidden' : ''}`} aria-label="Section shortcuts">
-        <ol>
-          {nav.map((item, i) => (
-            <li key={item.id}>
-              <a href={`#${item.id}`} className={i === activeIndex ? 'is-active' : undefined} aria-label={item.label}>
-                <span>0{i + 1}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
     </>
   )
 }

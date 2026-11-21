@@ -104,9 +104,10 @@
 .hero__stage {
   position: absolute;
   bottom: 0;
-  right: max(-20px, calc((100vw - var(--container)) / 2 - 90px));
-  height: min(calc(100% - var(--nav-h) * 0.45), calc(58vw * 0.934));
-  aspect-ratio: 1000 / 934;
+  right: 0;
+  /* Landscape desk photo: photo on the right, copy on the left (approved reference) */
+  height: min(calc(100% - var(--nav-h) - 12px), calc(66vw / 1.5229), 800px);
+  aspect-ratio: 1829 / 1201;
   touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
@@ -149,19 +150,19 @@
 }
 
 .hero__chip--1 {
-  top: 12%;
-  left: 9%;
+  top: 3%;
+  left: 21%;
 }
 
 .hero__chip--2 {
-  top: 26%;
-  right: 13%;
+  top: 19%;
+  left: 70%;
   transform: translate3d(calc(var(--px) * -12px), calc(var(--py) * -6px), 0);
 }
 
 .hero__chip--3 {
-  top: 63%;
-  right: 12%;
+  top: 49%;
+  left: 74%;
 }
 
 /* Small refined cursor indicator: ring + REVEAL (the native cursor stays visible) */
@@ -272,14 +273,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 0.9em;
+  gap: 0.35em 0.9em;
   margin-bottom: clamp(1rem, 2.4vh, 1.75rem);
   font-family: var(--font-mono);
-  font-size: var(--fs-micro);
-  font-weight: 500;
-  letter-spacing: var(--tracking-label);
+  font-size: clamp(0.6875rem, 0.6rem + 0.22vw, 0.8125rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-2);
+  color: var(--ink);
 }
 
 .hero__eyebrow::before {
@@ -363,8 +364,9 @@
   right: 0;
   bottom: clamp(16px, 3.5vh, 34px);
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  /* hint + toggle under the copy (left), scroll cue on the right — never over the photo's face */
+  justify-content: space-between;
+  align-items: flex-end;
   gap: 28px;
   margin-inline: auto;
   pointer-events: none;
@@ -376,8 +378,9 @@
 
 .hero__hint {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   font-family: var(--font-mono);
   font-size: var(--fs-micro);
   letter-spacing: var(--tracking-label);
@@ -455,6 +458,10 @@
 .hero__scroll {
   position: relative;
   z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 14px;
@@ -526,7 +533,7 @@
 /* ── Laptop / small desktop ── */
 @media (max-width: 1199px) and (min-width: 900px) {
   .hero__chip--1 {
-    left: 4%;
+    left: 18%;
   }
   .hero__hint-text--fine {
     display: none;
@@ -560,16 +567,16 @@
   }
 
   .hero__stage {
-    --stage-w: min(122vw, 680px);
+    --stage-w: min(150vw, 980px);
     position: relative;
     order: 1;
     right: auto;
     bottom: auto;
     height: auto;
     width: var(--stage-w);
-    /* centre the face (≈42% across the portrait) horizontally */
-    margin-left: calc(50% - var(--stage-w) * 0.425);
-    margin-top: -6px;
+    /* centre the face (≈51% across the photo) horizontally */
+    margin-left: calc(50% - var(--stage-w) * 0.514);
+    margin-top: 8px;
     flex-shrink: 0;
   }
 
@@ -579,15 +586,16 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 26%;
-    background: linear-gradient(to bottom, rgb(250 248 246 / 0), var(--bg) 88%);
+    height: 36%;
+    background: linear-gradient(to bottom, rgb(250 248 246 / 0), rgb(250 248 246 / 0.85) 55%, var(--bg) 82%);
     pointer-events: none;
     z-index: 2;
   }
 
   .hero__content {
     order: 2;
-    margin-top: calc(min(122vw, 680px) * -0.2);
+    /* tuck the copy just under the photo's faded lower edge */
+    margin-top: calc(min(150vw, 980px) / 1.5229 * -0.12);
     padding-top: 0;
   }
 
@@ -604,13 +612,13 @@
   }
 
   .hero__chip--1 {
-    top: 14%;
-    left: 8%;
+    top: 2%;
+    left: 22%;
   }
   .hero__chip--2 {
-    top: 31%;
+    top: 21%;
     right: auto;
-    left: 54%;
+    left: 58%;
   }
   .hero__chip--3 {
     display: none;
@@ -677,5 +685,20 @@
   .hero__avail i,
   .hero__scroll span::after {
     animation: none;
+  }
+}
+
+/* Keep the role line on one row on phones */
+@media (max-width: 480px) {
+  .hero__eyebrow {
+    font-size: 0.625rem;
+    letter-spacing: 0.07em;
+    gap: 0.3em 0.6em;
+  }
+  .hero__eyebrow::before {
+    display: none;
+  }
+  .hero__eyebrow i {
+    margin-right: 0.6em;
   }
 }

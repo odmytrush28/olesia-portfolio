@@ -12,6 +12,7 @@ export function About() {
           id="about-title"
           index="02"
           label="About"
+          level={1}
           title={[about.title[0], `a *${about.title[1].replace('a ', '')}*`]}
           lead={about.subtitle}
         />
@@ -20,11 +21,13 @@ export function About() {
           <Reveal className="about__media">
             <figure className="about__photo">
               <img
-                src={asset('images/olesia-photo.webp')}
-                width={622}
-                height={791}
+                src={asset('images/olesia-portrait.webp')}
+                srcSet={`${asset('images/olesia-portrait-480.webp')} 480w, ${asset('images/olesia-portrait.webp')} 800w`}
+                sizes="(max-width: 899px) 90vw, 40vw"
+                width={800}
+                height={1000}
                 alt={about.photoAlt}
-                loading="lazy"
+                fetchPriority="high"
                 decoding="async"
               />
               <figcaption>

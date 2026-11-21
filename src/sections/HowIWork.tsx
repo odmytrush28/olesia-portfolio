@@ -12,7 +12,7 @@ export function HowIWork() {
       <div className="container">
         <SectionHead
           id="how-title"
-          index="06.C"
+          index="02.B"
           label="How I work"
           title={['Curiosity,', 'with a *method.*']}
           lead="The same loop works for an audit, a requirements workshop or a bug hunt."

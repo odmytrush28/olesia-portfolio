@@ -290,3 +290,40 @@
 .exp-acc__panel .role__summary {
   margin-top: 0;
 }
+
+.role__spotlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  min-height: 46px;
+  padding: 0 8px 0 20px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+.role__spotlight > span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.role__spotlight:hover {
+  box-shadow: var(--shadow-accent);
+}
+
+.role__spotlight:hover > span {
+  transform: rotate(-45deg);
+}

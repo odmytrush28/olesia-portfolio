@@ -3,7 +3,8 @@ import { experience, type Role } from '../data/content'
 import { SectionHead } from '../components/SectionHead'
 import { Reveal } from '../components/Reveal'
 import { useMediaQuery } from '../hooks/useMediaQuery'
-import { PinIcon, PlusIcon } from '../components/Icons'
+import { ArrowIcon, PinIcon, PlusIcon } from '../components/Icons'
+import { Link } from '../router'
 import './experience.css'
 
 function RoleDetails({ role, idPrefix }: { role: Role; idPrefix: string }) {
@@ -15,7 +16,7 @@ function RoleDetails({ role, idPrefix }: { role: Role; idPrefix: string }) {
       <div className="role__head">
         <div>
           <p className="role__dates">{role.dates}</p>
-          <h3 className="role__company">{role.company}</h3>
+          <h2 className="role__company">{role.company}</h2>
           <p className="role__title">{role.title}</p>
         </div>
         <div className="role__meta">
@@ -51,6 +52,14 @@ function RoleDetails({ role, idPrefix }: { role: Role; idPrefix: string }) {
         ))}
       </ul>
       {role.note && <p className="role__note">{role.note}</p>}
+      {role.spotlight && (
+        <Link to={role.spotlight} className="role__spotlight">
+          {role.id === 'kpmg' ? 'Open the IT audit spotlight' : 'Open the Medline case study'}
+          <span aria-hidden="true">
+            <ArrowIcon size={15} />
+          </span>
+        </Link>
+      )}
     </div>
   )
 }
@@ -75,12 +84,13 @@ export function Experience() {
   }
 
   return (
-    <section id="experience" className="section section--alt experience" aria-labelledby="exp-title">
+    <section id="experience" className="section experience" aria-labelledby="exp-title">
       <div className="container">
         <SectionHead
           id="exp-title"
           index="03"
           label="Experience"
+          level={1}
           title={['Where I’ve', '*tested, coordinated*', 'and delivered.']}
           lead="From IT audit at KPMG to real-estate operations and a client technology project — each role added a different kind of rigor."
           split
@@ -128,7 +138,7 @@ export function Experience() {
               const open = Boolean(openItems[r.id])
               return (
                 <Reveal as="li" key={r.id} className={`exp-acc__item${open ? ' is-open' : ''}`}>
-                  <h3 className="exp-acc__heading">
+                  <h2 className="exp-acc__heading">
                     <button
                       type="button"
                       aria-expanded={open}
@@ -140,7 +150,7 @@ export function Experience() {
                       <span className="exp__tab-title">{r.title}</span>
                       <PlusIcon className="exp-acc__icon" />
                     </button>
-                  </h3>
+                  </h2>
                   <div id={`${uid}-acc-${r.id}`} className="exp-acc__panel" hidden={!open}>
                     <RoleDetails role={r} idPrefix={`${uid}-m`} />
                   </div>

@@ -180,7 +180,7 @@
   outline-color: var(--accent-strong);
 }
 
-.contact__card h3 {
+.contact__card h2 {
   color: var(--ink);
 }
 
@@ -322,7 +322,7 @@
   animation: pop 420ms var(--ease-out);
 }
 
-.sent h3 {
+.sent h2 {
   font-size: var(--fs-h3);
 }
 

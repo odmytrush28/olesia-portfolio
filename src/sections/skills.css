@@ -289,3 +289,26 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* Professional strengths grouped by area */
+.skills__group-head p b {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.skills__area + .skills__area {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+.skills__area-title {
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+

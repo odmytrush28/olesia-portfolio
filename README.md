@@ -1,14 +1,24 @@
 # Olesia Dmytrush — Interactive Portfolio
 
-Personal portfolio of **Olesia Dmytrush** — IT audit & assurance (KPMG Poland), business analysis, QA and
-technology (i.c.stars Chicago).
+Personal portfolio of **Olesia Dmytrush** — Business Analyst · AI & Data Solutions · IT Audit & QA
+(KPMG Poland, i.c.stars Chicago).
 
-The first screen is an editorial hero with an **interactive reveal**: moving the cursor anywhere over the hero
-(or pressing and holding on a phone) uncovers a hidden, perfectly aligned “AI side” of the whole screen —
-portrait, headline and background — through an organic, liquid mask. Navigation is a floating control that
-opens a full-screen menu. The rest of the site tells the story — about & strengths, experience, a project
-gallery with case studies, an AI video studio, skills mapped to evidence, ideas, how I work, journey &
-education — and ends with a contact form.
+The site is split into **pages** (hash routes, so they work on GitHub Pages and the browser's Back button
+always stays on the site):
+
+| Page | Address | What's on it |
+| --- | --- | --- |
+| Home | `#/` | Interactive hero (desk photo + hidden “AI side”), four focus areas, featured case studies, experience path |
+| About | `#/about` | Story & portrait, six strengths, how I work, journey timeline, education |
+| Experience | `#/experience` | Roles (KPMG, i.c.stars, real estate, bank), spotlights, skills mapped to evidence |
+| KPMG spotlight | `#/experience/kpmg` | IT Audit & Assurance in detail — the audit cycle and responsibilities |
+| Projects | `#/projects` | Case-study gallery with filters + ideas lab |
+| Case studies | `#/projects/medline`, `/cybersecurity-challenge`, `/cycle-soundtrack`, `/qa`, `/aivideo` | One page per project |
+| Creative Studio | `#/studio` | AI video & creative experiments |
+| Contact | `#/contact` | Contact form, email, LinkedIn, résumés |
+
+The hero has an **interactive reveal**: moving the cursor anywhere over it (or pressing and holding on a
+phone) uncovers a hidden, perfectly aligned “AI side” of the whole screen through an organic, liquid mask.
 
 ---
 
@@ -99,20 +109,36 @@ Validation and success/error states are built in; on any error the visitor is of
 | Hero headline / intro / chips | `hero` |
 | About story, facts, strengths | `about` |
 | Jobs | `experience` (newest first) |
-| Case studies | `projects` (add optional `links: [{ label, href }]` for real public URLs) |
+| Home focus areas | `focusAreas` |
+| Project cards | `projects` (add optional `links: [{ label, href }]` for real public URLs) |
+| Medline case study | `medlineCase`, `rollingDemo` (illustrative data for the 24-hour demo) |
+| Cybersecurity Challenge | `cyberChallenge` |
+| Cycle Soundtrack (Gift) | `cycleSoundtrack` (video, photos, quotes) |
+| KPMG spotlight page | `kpmgSpotlight` |
 | AI video / Creative Studio | `aiVideo`, `creativeWorks` |
 | Menu labels & subtitles | `nav` |
 | Ideas | `innovation` (keep the honest `status`: Concept / In development / Completed) |
-| Skills & evidence map | `skills`, `evidenceSources`, `otherTools`, `languageLevels` |
+| Skills & evidence map | `skillAreas` (professional strengths by area), `skills.developing`, `evidenceSources`, `otherTools`, `languageLevels` |
 | Process steps | `process`, `aiApproach` |
 | Timeline & education | `journey`, `education`, `training` |
 | Résumé files | `resumes` (PDFs live in `public/resume/`) |
 
 ### Add a project
-Add an object to `projects` with a `category` (`'Product & BA' | 'QA & Testing' | 'Operations' |
-'Creative & AI'`), `summary`, `status`, `tools` and `learned`. The four existing projects have a custom
-cover visual in `src/sections/Projects.tsx` (matched by `id`); a new project gets a clean typographic cover.
-Add `links: [{ label, href }]` only for real public URLs — the “View details” dialog shows them.
+Add an object to `projects` with a `category` (`'Business Analysis' | 'Cybersecurity' | 'Leadership' |
+'QA & Testing' | 'Creative & AI'`), `summary`, `status`, `role`, `tools` and — for the generic case-study
+layout — `problem`, `goal`, `work`, `outcome`, `learned`. It automatically gets a page at `#/projects/<id>`.
+Cover art lives in `src/components/ProjectCover.tsx` (matched by `id`); bespoke page layouts are in
+`src/sections/case/`. Add `links: [{ label, href }]` only for real public URLs.
+
+### Add Cybersecurity Challenge screenshots
+When the Tech Expo version has screenshots, put them in `public/images/cyber/` and add them to the
+`CyberCase` page (`src/sections/case/CyberCase.tsx`). Until then the page shows an illustrated cover and a
+small playable concept preview that is clearly labelled as a preview.
+
+### Cycle Soundtrack video
+`public/videos/cycle-soundtrack.mp4` is a web-compressed copy (720p, ~40 MB) of the original video; the
+original stays outside the repository (`Video/` is in `.gitignore` because GitHub rejects files over 100 MB).
+To re-export: `ffmpeg -i original.mp4 -vf "scale=-2:720" -c:v libx264 -preset medium -crf 26 -maxrate 1500k -bufsize 3000k -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 96k public/videos/cycle-soundtrack.mp4`
 
 ### AI video (Creative Studio)
 The film shown in the Creative Studio is defined in `aiVideo` in `content.ts` (title, credits, what was
@@ -148,17 +174,17 @@ automatically once the list is not empty.
 ### Replace images
 | File | Used for |
 | --- | --- |
-| `public/hero/hero-clean.webp` (+ `-700`) | Hero portrait — Image 1 |
-| `public/hero/hero-ai-portrait.webp` (+ `-1000`) | Transparent AI portrait used inside the reveal layer (see `design-source/README.md`) |
+| `public/hero/hero-desk.webp` (+ `-1300`, `-1000`) | Hero photo — Olesia at her desk (transparent background) |
+| `public/hero/hero-desk-ai.webp` (+ `-1300`, `-1000`) | The aligned “AI side” of the same photo, shown through the reveal (see `design-source/README.md`) |
 | `public/hero/hero-ai-eye.webp` | Eye detail shown inside the hero “Let’s connect” button on hover |
-| `public/videos/*.mp4` + `*.webp` | AI video scenes and posters |
-| `public/images/olesia-photo.webp` | About photo |
+| `public/videos/*.mp4` + `*.webp` | AI film scenes, Cycle Soundtrack video and posters |
+| `public/images/olesia-portrait*.webp` | About photo (Cycle 60 headshot) |
+| `public/images/techbash/*.webp` | TechBash 2026 photos on the Cycle Soundtrack page |
 | `public/images/qa-diploma*.webp` | QC/QA diploma |
 | `public/og-image.jpg` | Link preview image (1200 × 630) |
 | `public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-*.png` | Icons |
 
-Keep `hero-clean` and `hero-ai-portrait` at the same framing (the AI portrait at exactly 2× size), or the
-reveal will not line up.
+Keep `hero-desk` and `hero-desk-ai` at exactly the same size and framing, or the reveal will not line up.
 
 ---
 
@@ -168,24 +194,28 @@ reveal will not line up.
 ├─ .github/workflows/deploy.yml   GitHub Pages build & deploy
 ├─ design-source/                 Hero source files + how to replace the AI layer (not shipped)
 ├─ public/                        Static files copied as-is
-│  ├─ hero/                       Clean portrait + transparent AI portrait for the reveal
-│  ├─ images/                     About photo, diploma
-│  ├─ videos/                     AI video scenes (.mp4) and posters (.webp)
+│  ├─ hero/                       Desk photo + aligned AI version for the reveal
+│  ├─ images/                     About portrait, diploma, TechBash photos
+│  ├─ videos/                     AI film scenes, Cycle Soundtrack video, posters
 │  ├─ resume/                     4 role-specific résumé PDFs
 │  ├─ creative/                   Design / reel files (empty for now)
 │  └─ favicon.svg, og-image.jpg …
 ├─ src/
 │  ├─ data/content.ts             ← all text and data
+│  ├─ router.tsx                  Tiny hash router (pages, links, Back/Forward)
+│  ├─ pages/                      Home, About, Experience, KPMG, Projects, ProjectPage, Studio, Contact, 404
 │  ├─ components/
 │  │  ├─ hero/Hero.tsx            Hero layout, pointer/touch logic
 │  │  ├─ hero/liquidReveal.ts     WebGL liquid-mask engine (+ Canvas 2D fallback)
 │  │  ├─ hero/aiLayer.ts          Builds the full-hero “AI side” from the live layout
 │  │  ├─ Nav.tsx                  Floating header + full-screen menu with previews
-│  │  ├─ ResumeMenu.tsx, Lightbox.tsx, Reveal.tsx, SectionHead.tsx, Icons.tsx
-│  ├─ sections/                   About (+ Strengths), Experience, Projects (+ IncidentDemo),
-│  │                              CreativeStudio, Skills, InnovationLab, HowIWork, Journey,
-│  │                              Contact, Footer
-│  ├─ hooks/                      media queries, in-view, scroll-spy, magnetic buttons
+│  │  ├─ ProjectCover.tsx         Cover art for each project
+│  │  ├─ CountUp, ResumeMenu, Lightbox, Reveal, SectionHead, Icons
+│  ├─ sections/                   About (+ Strengths), Experience, Projects, CreativeStudio,
+│  │                              Skills, InnovationLab, HowIWork, Journey, Contact, Footer, home.css
+│  │  └─ case/                    Case-study pages: Medline (+ RollingDemo), Cybersecurity,
+│  │                              Cycle Soundtrack, generic (QA, AI film), shared parts
+│  ├─ hooks/                      media queries, in-view, magnetic buttons
 │  └─ styles/                     tokens.css (design system) + base.css
 ├─ index.html                     SEO, Open Graph, structured data
 └─ vite.config.ts
@@ -215,12 +245,11 @@ reveal will not line up.
 ## Quality checklist (verified before hand-over)
 
 * Production build and TypeScript check pass with no errors; no console errors.
-* Tested at 1920×1080, 1440×900, 1280×800, 768×1024 and 390×844 — no horizontal scrolling.
-* Mouse reveal over headline and portrait, mouse-leave collapse, toggle, touch tap and press-and-hold verified.
-* Menu: open/close, Escape, focus trap, focus return, section jumps; project dialogs, diploma lightbox and
-  video player (full story auto-advance, scene previews) verified on desktop and mobile.
-* axe-core accessibility scan: 0 violations (desktop and mobile, including open menu and dialogs).
-* Lighthouse: desktop 100 / 100 / 100 / 100; mobile performance ≈ 90, accessibility / best practices / SEO 100.
+* Automated Playwright suite (every page, every internal link, every file, header/menu/footer links, Back &
+  Forward, filters, case-study controls, demo, quiz, lightboxes, video viewer, journey filter, skills map,
+  contact form) — run at 1440×900, 768×1024 and 390×844.
+* axe-core accessibility scan: 0 violations on every page (desktop and mobile, including open menu and lightbox).
+* Lighthouse: desktop 100 / 100 / 100 / 100; mobile performance ≈ 90+, accessibility / best practices / SEO 100.
 * Works from a sub-folder (GitHub Pages project URL) with no missing files.
 * Semantic landmarks, one `h1`, skip link, visible focus states, keyboard-operable tabs/accordions/menus,
   `prefers-reduced-motion` respected.
@@ -234,5 +263,6 @@ reveal will not line up.
 * Photos, portrait artwork, diploma and résumés: © Olesia Dmytrush — not for reuse.
 * Fonts: [Outfit](https://fonts.google.com/specimen/Outfit) and
   [JetBrains Mono](https://www.jetbrains.com/lp/mono/), both SIL Open Font License 1.1.
-* The Incident → Problem demo uses **illustrative mock data**, not Medline data.
+* The rolling 24-hour demo and the ticket illustration on the Medline page use **illustrative mock data**, not Medline data.
+* Quotes on the Cycle Soundtrack page come from messages sent to Olesia by i.c.stars staff (Nov 2026).
 * Private working documents (résumé workbook, feedback, guides) are intentionally **not** part of this repository.

@@ -237,6 +237,73 @@ a.brand:hover .brand__line {
   }
 }
 
+/* Page links (desktop) — the current page gets a soft pill */
+.nav__links {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .nav__links {
+    display: block;
+  }
+  .nav__now {
+    display: none;
+  }
+}
+
+.nav__links ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+}
+
+.nav__links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateX(-50%) scale(0);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.nav__links a:hover {
+  color: var(--ink);
+  background: rgb(14 14 16 / 0.05);
+}
+
+.nav__links a.is-current {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nav__links a.is-current::after {
+  transform: translateX(-50%) scale(1);
+}
+
 @media (max-width: 767px) {
   .nav__cta {
     display: none;
@@ -651,6 +718,12 @@ a.brand:hover .brand__line {
   box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.8);
 }
 
+.mprev__img--wide {
+  aspect-ratio: 1829 / 1201;
+  object-fit: contain;
+  background: radial-gradient(circle at 60% 40%, #fff, #f1ece9);
+}
+
 .mprev__img--portrait {
   object-fit: contain;
   background: radial-gradient(circle at 50% 40%, #fff, #f1ece9);
@@ -853,4 +926,41 @@ a.brand:hover .brand__line {
   color: var(--accent-strong);
   border-right-color: var(--accent);
   font-weight: 600;
+}
+
+
+/* Pages that open on a dark section: light header text until it turns into the glass bar */
+.nav--on-dark:not(.is-scrolled) .brand,
+.nav--on-dark:not(.is-scrolled) .nav__now,
+.nav--on-dark:not(.is-scrolled) .nav__links a.is-current {
+  color: var(--on-dark);
+}
+
+.nav--on-dark:not(.is-scrolled) .nav__links a {
+  color: var(--on-dark-muted);
+}
+
+.nav--on-dark:not(.is-scrolled) .nav__links a:hover {
+  color: var(--on-dark);
+  background: rgb(255 255 255 / 0.08);
+}
+
+.nav--on-dark:not(.is-scrolled) .nav__ring circle:first-child {
+  stroke: rgb(255 255 255 / 0.2);
+}
+
+.nav--on-dark:not(.is-scrolled) .nav__cta {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.nav--on-dark:not(.is-scrolled) .nav__menu,
+.nav--on-dark:not(.is-scrolled) .nav__mail {
+  border-color: rgb(255 255 255 / 0.22);
+  background: rgb(255 255 255 / 0.08);
+  color: var(--on-dark);
+}
+
+.nav--on-dark:not(.is-scrolled) .nav__menu-icon {
+  background: var(--accent);
 }

@@ -19,3 +19,10 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# private / raw source material kept next to the project — never publish
+Video/
+zdjecia/
+*.docx
+~$*
+.claude-tmp/

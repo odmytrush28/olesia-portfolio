@@ -193,7 +193,7 @@
   background: transparent;
 }
 
-.film__split h4 {
+.film__split h3 {
   margin-bottom: 10px;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
@@ -203,7 +203,7 @@
   color: var(--accent);
 }
 
-.film__split-ai h4 {
+.film__split-ai h3 {
   color: var(--on-dark-muted);
 }
 

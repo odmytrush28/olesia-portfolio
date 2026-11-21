@@ -198,17 +198,20 @@ ol {
   margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
 }
 
-.section-head h2 {
+.section-head h2,
+.section-head h1 {
   font-size: var(--fs-h2);
   text-transform: uppercase;
   line-height: 0.98;
 }
 
-.section-head h2 .accent {
+.section-head h2 .accent,
+.section-head h1 .accent {
   color: var(--accent-display);
 }
 
-.dark .section-head h2 .accent {
+.dark .section-head h2 .accent,
+.dark .section-head h1 .accent {
   color: var(--accent);
 }
 
@@ -456,6 +459,7 @@ ol {
   color: var(--on-dark-muted);
 }
 
+.dark h1,
 .dark h2,
 .dark h3,
 .dark h4 {
@@ -479,3 +483,196 @@ ol {
     transform: none;
   }
 }
+
+
+/* ─────────────── Pages ─────────────── */
+main:focus {
+  outline: none;
+}
+
+.page {
+  animation: page-in 520ms var(--ease-out) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The first section of a page clears the fixed header */
+.page > .section:first-child,
+.page > .page-top:first-child {
+  padding-top: calc(var(--nav-h) + clamp(2.5rem, 1.6rem + 3vw, 5rem));
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.crumbs a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.crumbs a:hover {
+  color: var(--accent-strong);
+  border-bottom-color: currentColor;
+}
+
+.crumbs a svg {
+  transform: scaleX(-1);
+}
+
+.dark .crumbs,
+.dark .crumbs a {
+  color: var(--on-dark-muted);
+}
+
+.dark .crumbs a:hover {
+  color: var(--on-dark);
+}
+
+.crumbs [aria-current] {
+  color: var(--ink-2);
+}
+
+/* Next / previous page links */
+.pager {
+  display: grid;
+  gap: 14px;
+  margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+}
+
+@media (min-width: 720px) {
+  .pager {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pager a {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: 22px 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.pager a:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.pager__dir {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pager__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.pager a:last-child:not(:first-child) {
+  text-align: right;
+}
+
+/* Closing call-to-action band */
+.cta-band {
+  position: relative;
+  display: grid;
+  gap: 24px;
+  align-items: center;
+  padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(70% 120% at 100% 0%, rgb(255 63 108 / 0.28), rgb(255 63 108 / 0) 60%),
+    var(--dark);
+  color: var(--on-dark);
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .cta-band {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.cta-band h2 {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--on-dark);
+}
+
+.cta-band h2 span {
+  color: var(--accent);
+}
+
+.cta-band p {
+  margin-top: 10px;
+  max-width: 54ch;
+  color: var(--on-dark-muted);
+}
+
+.cta-band__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    animation: none;
+  }
+}
+
+.page-loading {
+  min-height: 100vh;
+}
+
+/* ── 404 ── */
+.notfound__title {
+  margin: 18px 0 12px;
+  font-size: var(--fs-h2);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.notfound__text {
+  margin-bottom: 26px;
+  color: var(--muted);
+}
+

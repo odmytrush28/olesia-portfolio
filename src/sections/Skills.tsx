@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { evidenceSources, languageLevels, otherTools, skills, type EvidenceId, type Skill } from '../data/content'
+import { evidenceSources, languageLevels, otherTools, skillAreas, skills, type EvidenceId, type Skill } from '../data/content'
 import { SectionHead } from '../components/SectionHead'
 import { Reveal } from '../components/Reveal'
 import './skills.css'
@@ -18,56 +18,51 @@ export function Skills() {
     sel?.kind === 'skill' ? sel.skill.name === s.name : sel?.kind === 'source' ? s.evidence.includes(sel.id) : false
   const dimSkills = sel?.kind === 'source'
 
-  const group = (title: string, note: string, list: Skill[], tone: 'pro' | 'dev') => {
-    const selectedHere = sel?.kind === 'skill' && list.some((s) => s.name === sel.skill.name) ? sel.skill : null
+  const chip = (s: Skill) => {
+    const lit = isSkillLit(s)
     return (
-      <Reveal className={`skills__group skills__group--${tone}`}>
-        <div className="skills__group-head">
-          <h3>{title}</h3>
-          <p>{note}</p>
-        </div>
-        <ul className="skills__chips">
-          {list.map((s) => {
-            const lit = isSkillLit(s)
-            return (
-              <li key={s.name}>
-                <button
-                  type="button"
-                  className={`chip${lit ? ' is-lit' : ''}${dimSkills && !lit ? ' is-dim' : ''}`}
-                  aria-pressed={pinned?.kind === 'skill' && pinned.skill.name === s.name}
-                  onClick={() => {
-                    setPreview(null)
-                    setPinned((cur) => (cur?.kind === 'skill' && cur.skill.name === s.name ? null : { kind: 'skill', skill: s }))
-                  }}
-                  onPointerEnter={(e) => e.pointerType === 'mouse' && setPreview({ kind: 'skill', skill: s })}
-                  onPointerLeave={(e) => e.pointerType === 'mouse' && setPreview(null)}
-                >
-                  <span className="chip__name">{s.name}</span>
-                  <span className="chip__level">{s.level}</span>
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-        <p className="skills__readout" aria-live="polite">
-          {selectedHere ? (
-            <>
-              <b>{selectedHere.name}</b> — {selectedHere.level.toLowerCase()} · evidence: {selectedHere.evidence.map(sourceName).join(', ')}
-            </>
-          ) : (
-            <span className="skills__readout-hint">Select a skill to see where I used it.</span>
-          )}
-        </p>
-      </Reveal>
+      <li key={s.name}>
+        <button
+          type="button"
+          className={`chip${lit ? ' is-lit' : ''}${dimSkills && !lit ? ' is-dim' : ''}`}
+          aria-pressed={pinned?.kind === 'skill' && pinned.skill.name === s.name}
+          onClick={() => {
+            setPreview(null)
+            setPinned((cur) => (cur?.kind === 'skill' && cur.skill.name === s.name ? null : { kind: 'skill', skill: s }))
+          }}
+          onPointerEnter={(e) => e.pointerType === 'mouse' && setPreview({ kind: 'skill', skill: s })}
+          onPointerLeave={(e) => e.pointerType === 'mouse' && setPreview(null)}
+        >
+          <span className="chip__name">{s.name}</span>
+          <span className="chip__level">{s.level}</span>
+        </button>
+      </li>
     )
   }
+
+  const readout = (list: Skill[]) => {
+    const selectedHere = sel?.kind === 'skill' && list.some((s) => s.name === sel.skill.name) ? sel.skill : null
+    return (
+      <p className="skills__readout" aria-live="polite">
+        {selectedHere ? (
+          <>
+            <b>{selectedHere.name}</b> — {selectedHere.level.toLowerCase()} · evidence: {selectedHere.evidence.map(sourceName).join(', ')}
+          </>
+        ) : (
+          <span className="skills__readout-hint">Select a skill to see where I used it.</span>
+        )}
+      </p>
+    )
+  }
+
+  const allPro = skillAreas.flatMap((a) => a.skills)
 
   return (
     <section id="skills" className="section section--alt skills" aria-labelledby="skills-title">
       <div className="container">
         <SectionHead
           id="skills-title"
-          index="06"
+          index="03.B"
           label="Skills"
           title={['Proven skills,', '*growing* skills.']}
           lead="No percentage bars. Each skill is tied to where I actually used it — and professional strengths are kept separate from the technical skills I’m still building."
@@ -76,8 +71,29 @@ export function Skills() {
 
         <div className="skills__layout">
           <div className="skills__groups">
-            {group('Professional strengths', 'Used in paid work, at a professional level.', skills.professional, 'pro')}
-            {group('Developing technical skills', 'Foundational — learning and practicing them now.', skills.developing, 'dev')}
+            <Reveal className="skills__group skills__group--pro">
+              <div className="skills__group-head">
+                <h3>Professional strengths</h3>
+                <p>
+                  <b>Professional</b> = used in paid roles · <b>Applied</b> = used on the Medline client project.
+                </p>
+              </div>
+              {skillAreas.map((area) => (
+                <div key={area.id} className="skills__area">
+                  <h4 className="skills__area-title">{area.title}</h4>
+                  <ul className="skills__chips">{area.skills.map(chip)}</ul>
+                </div>
+              ))}
+              {readout(allPro)}
+            </Reveal>
+            <Reveal className="skills__group skills__group--dev">
+              <div className="skills__group-head">
+                <h3>Developing technical skills</h3>
+                <p>Foundational — learning and practicing them now.</p>
+              </div>
+              <ul className="skills__chips">{skills.developing.map(chip)}</ul>
+              {readout(skills.developing)}
+            </Reveal>
           </div>
 
           <Reveal className="evidence" delay={100}>

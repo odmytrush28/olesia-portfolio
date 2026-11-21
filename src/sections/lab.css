@@ -25,15 +25,9 @@
   gap: 16px;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 900px) {
   .lab__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1200px) {
-  .lab__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

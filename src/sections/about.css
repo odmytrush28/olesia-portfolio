@@ -33,7 +33,8 @@
 .about__photo img {
   position: relative;
   width: 100%;
-  aspect-ratio: 622 / 791;
+  aspect-ratio: 4 / 5;
+  object-position: center 20%;
   object-fit: cover;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);

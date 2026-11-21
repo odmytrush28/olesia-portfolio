@@ -5,10 +5,11 @@ import { buildAiLayer } from './aiLayer'
 import { useFinePointer, useReducedMotion } from '../../hooks/useMediaQuery'
 import { useMagnetic } from '../../hooks/useMagnetic'
 import { ArrowIcon } from '../Icons'
+import { Link } from '../../router'
 import './hero.css'
 
-/** Where the face sits inside the portrait (0–1), used for the keyboard / tap toggle. */
-const FACE = { x: 0.425, y: 0.33 }
+/** Where the face sits inside the photo (0–1), used for the keyboard / tap toggle. */
+const FACE = { x: 0.514, y: 0.26 }
 const HOLD_MS = 170
 const MOVE_TOLERANCE = 10
 const INTERACTIVE = 'a, button, input, textarea, select, label'
@@ -32,7 +33,8 @@ export function Hero() {
 
   const portraitSrc = () => {
     const w = stageRef.current?.getBoundingClientRect().width ?? 1000
-    return asset(w * Math.min(window.devicePixelRatio || 1, 2) > 1100 ? 'hero/hero-ai-portrait.webp' : 'hero/hero-ai-portrait-1000.webp')
+    const px = w * Math.min(window.devicePixelRatio || 1, 2)
+    return asset(px > 1400 ? 'hero/hero-desk-ai.webp' : px > 1050 ? 'hero/hero-desk-ai-1300.webp' : 'hero/hero-desk-ai-1000.webp')
   }
 
   /** (Re)compose IMAGE 2 from the current layout and hand it to the engine. */
@@ -281,9 +283,11 @@ export function Hero() {
       style={{ '--eye': `url(${new URL(asset('hero/hero-ai-eye.webp'), document.baseURI).href})` } as CSSProperties}
     >
       <div className="hero__ghost" aria-hidden="true">
-        <span className="ghost ghost--1">{hero.ghostWords[0]}</span>
-        <span className="ghost ghost--2">{hero.ghostWords[1]}</span>
-        <span className="ghost ghost--3">{hero.ghostWords[2]}</span>
+        {hero.ghostWords.map((w, i) => (
+          <span key={w} className={`ghost ghost--${i + 1}`}>
+            {w}
+          </span>
+        ))}
       </div>
 
       <div className="hero__meta container" aria-hidden="true">
@@ -298,12 +302,12 @@ export function Hero() {
       <div ref={stageRef} className="hero__stage">
         <img
           className="hero__img"
-          src={asset('hero/hero-clean.webp')}
-          srcSet={`${asset('hero/hero-clean-700.webp')} 700w, ${asset('hero/hero-clean.webp')} 1000w`}
-          sizes="(max-width: 899px) 120vw, 62vw"
-          width={1000}
-          height={934}
-          alt="Portrait of Olesia Dmytrush in a white blazer"
+          src={asset('hero/hero-desk.webp')}
+          srcSet={`${asset('hero/hero-desk-1000.webp')} 1000w, ${asset('hero/hero-desk-1300.webp')} 1300w, ${asset('hero/hero-desk.webp')} 1829w`}
+          sizes="(max-width: 899px) 150vw, 66vw"
+          width={1829}
+          height={1201}
+          alt="Olesia Dmytrush sitting at a white desk with a laptop, in a black blazer"
           fetchPriority="high"
           decoding="async"
           draggable={false}
@@ -322,7 +326,7 @@ export function Hero() {
         <p className="hero__eyebrow" data-ai="eyebrow">
           {hero.eyebrow.map((w, i) => (
             <span key={w}>
-              {i > 0 && <i aria-hidden="true">•</i>}
+              {i > 0 && <i aria-hidden="true">|</i>}
               {w}
             </span>
           ))}
@@ -340,15 +344,15 @@ export function Hero() {
           {hero.intro}
         </p>
         <div className="hero__ctas">
-          <a ref={primaryRef} className="btn btn--primary" href="#contact">
+          <Link ref={primaryRef} className="btn btn--primary" to="/contact">
             Let’s connect
             <span className="btn__orb btn__orb--eye" aria-hidden="true">
               <ArrowIcon />
             </span>
-          </a>
-          <a ref={secondaryRef} className="btn btn--ghost" href="#projects">
+          </Link>
+          <Link ref={secondaryRef} className="btn btn--ghost" to="/projects">
             View my work
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -374,10 +378,15 @@ export function Hero() {
             {aiOn ? 'Hide AI side' : 'Reveal AI side'}
           </button>
         </div>
-        <a className="hero__scroll" href="#about" data-ai="scroll">
+        <button
+          type="button"
+          className="hero__scroll"
+          data-ai="scroll"
+          onClick={() => document.getElementById('what-i-do')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })}
+        >
           Scroll
           <span aria-hidden="true" />
-        </a>
+        </button>
       </div>
 
       <span className="hero__vertical" aria-hidden="true">
@@ -390,7 +399,7 @@ export function Hero() {
       </div>
 
       <p className="sr-only" aria-live="polite">
-        {aiOn ? 'Futuristic AI layer shown over the portrait.' : ''}
+        {aiOn ? 'Futuristic AI layer shown over the photo.' : ''}
       </p>
     </section>
   )

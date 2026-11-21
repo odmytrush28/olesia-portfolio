@@ -146,12 +146,12 @@ export function Contact() {
       <div className="container contact__grid">
         <Reveal className="contact__intro">
           <span className="label">
-            [ <b>08</b> ] Contact
+            [ <b>06</b> ] Contact
           </span>
-          <h2 id="contact-title" className="contact__title">
+          <h1 id="contact-title" className="contact__title">
             <span>{contact.title[0]}</span>
             <span className="accent">{contact.title[1]}</span>
-          </h2>
+          </h1>
           <p className="contact__text">{contact.text}</p>
 
           <ul className="contact__links">
@@ -210,7 +210,7 @@ export function Contact() {
               <span className="sent__icon" aria-hidden="true">
                 <CheckIcon size={28} />
               </span>
-              <h3>Message sent — thank you!</h3>
+              <h2>Message sent — thank you!</h2>
               <p>I read every message and will reply by email as soon as I can.</p>
               <button type="button" className="btn btn--ghost btn--sm" onClick={() => setStatus('idle')}>
                 Send another
@@ -218,7 +218,7 @@ export function Contact() {
             </div>
           ) : (
             <form ref={formRef} className="form" onSubmit={onSubmit} noValidate>
-              <h3 className="form__title">Send a message</h3>
+              <h2 className="form__title">Send a message</h2>
               {!ACCESS_KEY && (
                 <p className="form__notice" role="note">
                   Direct form delivery isn’t switched on yet — pressing send opens your email app with your message

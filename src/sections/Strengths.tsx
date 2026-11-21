@@ -1,46 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { about, asset } from '../data/content'
 import { Reveal } from '../components/Reveal'
-import { useInView } from '../hooks/useInView'
-import { useReducedMotion } from '../hooks/useMediaQuery'
+import { CountUp } from '../components/CountUp'
 import { PlusIcon } from '../components/Icons'
 import './strengths.css'
 
 type Strength = (typeof about.strengths)[number]
-
-/** Counts up to `value` once visible (instant with reduced motion). */
-function CountUp({ value, prefix, suffix }: { value: number; prefix: string; suffix: string }) {
-  const { ref, inView } = useInView<HTMLSpanElement>()
-  const reduced = useReducedMotion()
-  const [n, setN] = useState(0)
-  useEffect(() => {
-    if (!inView) return
-    if (reduced) {
-      setN(value)
-      return
-    }
-    let raf = 0
-    const t0 = performance.now()
-    const dur = 1300
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - t0) / dur)
-      setN(Math.round(value * (1 - Math.pow(1 - p, 3))))
-      if (p < 1) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [inView, reduced, value])
-  return (
-    <span ref={ref} className="sfig__value">
-      <span aria-hidden="true">
-        {prefix}
-        {n}
-        {suffix}
-      </span>
-      <span className="sr-only">{`${prefix}${value}${suffix}`}</span>
-    </span>
-  )
-}
 
 /** Small animated illustration per strength (decorative). */
 function Visual({ id }: { id: Strength['id'] }) {
@@ -59,6 +24,23 @@ function Visual({ id }: { id: Strength['id'] }) {
           <span key={l} style={{ ['--i' as string]: i }}>
             {l}
           </span>
+        ))}
+      </div>
+    )
+  if (id === 'requirements')
+    return (
+      <div className="sv sv--window" aria-hidden="true">
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          <span key={i} className={[2, 4, 5].includes(i) ? 'is-match' : ''} style={{ ['--i' as string]: i }} />
+        ))}
+        <b>24h</b>
+      </div>
+    )
+  if (id === 'leadership')
+    return (
+      <div className="sv sv--eq" aria-hidden="true">
+        {Array.from({ length: 12 }, (_, i) => (
+          <span key={i} style={{ ['--i' as string]: i }} />
         ))}
       </div>
     )
@@ -103,7 +85,7 @@ function StrengthCard({ s, i }: { s: Strength; i: number }) {
         <CountUp value={s.figure.value} prefix={s.figure.prefix} suffix={s.figure.suffix} />
         <span className="sfig__label">{s.figure.label}</span>
       </p>
-      <h4 className="scard__title">{s.title}</h4>
+      <h3 className="scard__title">{s.title}</h3>
       <p className="scard__text">{s.text}</p>
       <button type="button" className="scard__more" aria-expanded={open} aria-controls={listId} onClick={() => setOpen((v) => !v)}>
         <PlusIcon size={14} />
@@ -125,9 +107,9 @@ export function Strengths() {
     <div className="strengths">
       <Reveal className="strengths__head">
         <span className="label">What I bring</span>
-        <h3 className="strengths__title">
-          Four strengths, <span>backed by real work.</span>
-        </h3>
+        <h2 className="strengths__title">
+          Six strengths, <span>backed by real work.</span>
+        </h2>
       </Reveal>
       <ol className="strengths__grid">
         {about.strengths.map((s, i) => (

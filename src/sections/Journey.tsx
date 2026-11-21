@@ -15,7 +15,23 @@ const filters: { id: 'all' | Milestone['kind']; label: string }[] = [
 export function Journey() {
   const [filter, setFilter] = useState<(typeof filters)[number]['id']>('all')
   const listRef = useRef<HTMLOListElement>(null)
+  const filtersRef = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
+  const shown = filter === 'all' ? journey : journey.filter((m) => m.kind === filter)
+
+  /** Filter, then bring the results into view so it's obvious what changed. */
+  const choose = (id: (typeof filters)[number]['id']) => {
+    setFilter(id)
+    requestAnimationFrame(() => {
+      const bar = filtersRef.current
+      if (!bar) return
+      const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 76
+      const top = bar.getBoundingClientRect().top
+      if (top < nav - 4 || top > nav + 120) {
+        window.scrollTo({ top: window.scrollY + top - nav - 12, behavior: reduced ? 'auto' : 'smooth' })
+      }
+    })
+  }
 
   // Scroll-linked progress line + "passed" milestones
   useEffect(() => {
@@ -49,34 +65,36 @@ export function Journey() {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [reduced])
+  }, [reduced, filter])
 
   return (
     <section id="journey" className="section journey" aria-labelledby="journey-title">
       <div className="container">
         <SectionHead
           id="journey-title"
-          index="07"
+          index="02.C"
           label="Journey"
           title={['One path.', 'Three countries.', '*Four degrees.*']}
           lead="Every move was a choice to keep growing — new country, new language, new field."
           split
         />
 
-        <div className="tl__filters" role="group" aria-label="Filter milestones">
+        <div ref={filtersRef} className="tl__filters" role="group" aria-label="Filter milestones">
           {filters.map((f) => (
-            <button key={f.id} type="button" aria-pressed={filter === f.id} className={filter === f.id ? 'is-active' : ''} onClick={() => setFilter(f.id)}>
+            <button key={f.id} type="button" aria-pressed={filter === f.id} className={filter === f.id ? 'is-active' : ''} onClick={() => choose(f.id)}>
               <span className={`tl__swatch tl__swatch--${f.id}`} aria-hidden="true" />
               {f.label}
             </button>
           ))}
         </div>
 
-        <ol ref={listRef} className="tl">
-          {journey.map((m, i) => {
-            const dim = filter !== 'all' && filter !== m.kind
+        <p className="tl__count" aria-live="polite">
+          {filter === 'all' ? `All ${journey.length} milestones` : `${shown.length} ${filter} milestone${shown.length === 1 ? '' : 's'}`}
+        </p>
+        <ol ref={listRef} className="tl" key={filter}>
+          {shown.map((m, i) => {
             return (
-              <li key={m.title} className={`tl__item tl__item--${m.kind}${dim ? ' is-dim' : ''}${i % 2 ? ' tl__item--right' : ''}`}>
+              <li key={m.title} className={`tl__item tl__item--${m.kind}${i % 2 ? ' tl__item--right' : ''}`}>
                 <span className="tl__dot" aria-hidden="true" />
                 <Reveal className="tl__card">
                   <p className="tl__when">{m.when}</p>

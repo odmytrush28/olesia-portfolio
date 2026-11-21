@@ -9,6 +9,8 @@ type Props = {
   lead?: ReactNode
   split?: boolean
   id?: string
+  /** 1 for the page's main heading. */
+  level?: 1 | 2
 }
 
 const accentize = (line: string) =>
@@ -22,19 +24,20 @@ const accentize = (line: string) =>
     ),
   )
 
-export function SectionHead({ index, label, title, lead, split, id }: Props) {
+export function SectionHead({ index, label, title, lead, split, id, level = 2 }: Props) {
+  const H = level === 1 ? 'h1' : 'h2'
   return (
-    <Reveal className={`section-head${split ? ' section-head--split' : ''}`}>
+    <Reveal className={`section-head${split ? ' section-head--split' : ''}${level === 1 ? ' section-head--page' : ''}`}>
       <span className="label">
         [ <b>{index}</b> ] {label}
       </span>
-      <h2 id={id}>
+      <H id={id}>
         {title.map((line, i) => (
           <span key={i} style={{ display: 'block' }}>
             {accentize(line)}
           </span>
         ))}
-      </h2>
+      </H>
       {lead && <p className="lead">{lead}</p>}
     </Reveal>
   )

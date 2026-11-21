@@ -165,7 +165,7 @@ export function buildAiLayer({ hero, stage, portrait, maxTextureSize }: AiLayerI
   const rootStyle = getComputedStyle(document.documentElement)
   const mono = rootStyle.getPropertyValue('--font-mono').trim() || 'monospace'
   const st = relRect(stage, origin)
-  const face = { x: st.x + st.w * 0.425, y: st.y + st.h * 0.33 }
+  const face = { x: st.x + st.w * 0.514, y: st.y + st.h * 0.26 }
   const title = hero.querySelector('.hero__title')
   const tr = title ? relRect(title, origin) : { x: W * 0.05, y: H * 0.35, w: W * 0.4, h: H * 0.3 }
 
@@ -254,21 +254,19 @@ export function buildAiLayer({ hero, stage, portrait, maxTextureSize }: AiLayerI
     })
   })
 
-  // ── 3. Code panels beside the portrait ──
-  const pw = Math.min(330, Math.max(220, st.w * 0.36))
-  codePanel(ctx, mono, st.x + st.w * 0.66, st.y + st.h * 0.15, pw, 'problem_patterns.sql', [
-    'SELECT incident_id, area,',
-    '       COUNT(*) AS repeats',
-    'FROM   incidents',
-    'GROUP  BY incident_id, area',
-    'HAVING COUNT(*) > 1;',
-    '#90,56,40',
-  ])
-  codePanel(ctx, mono, st.x + st.w * 0.7, st.y + st.h * 0.53, pw * 0.92, 'qa_checklist.md', [
-    'expected == actual  ->  PASS',
-    '#70,110',
-    '#50,90,36',
-  ], 0.9)
+  // ── 3. Code panel in the free space above the laptop (illustrates the Medline rule) ──
+  const pw = Math.min(300, Math.max(214, st.w * 0.23))
+  const px = Math.min(st.x + st.w * 0.755, W - pw - 16)
+  if (st.w > 520 && px > st.x + st.w * 0.6) {
+    codePanel(ctx, mono, px, st.y + st.h * 0.01, pw, 'problem_rule.sql', [
+      '-- 3 similar in a rolling 24 h',
+      'SELECT category, COUNT(*)',
+      'FROM   incidents',
+      "WHERE  opened > now() - '24h'",
+      'GROUP  BY category',
+      'HAVING COUNT(*) >= 3;',
+    ])
+  }
 
   // ── 4. The futuristic portrait, exactly over the photo ──
   const tmp = document.createElement('canvas')
@@ -279,12 +277,13 @@ export function buildAiLayer({ hero, stage, portrait, maxTextureSize }: AiLayerI
   // Mobile layout fades the photo's lower edge — match it.
   const fade = getComputedStyle(stage, '::after').content
   if (fade && fade !== 'none') {
-    const g = tctx.createLinearGradient(0, tmp.height * 0.74, 0, tmp.height * 0.97)
+    const g = tctx.createLinearGradient(0, tmp.height * 0.64, 0, tmp.height * 0.94)
     g.addColorStop(0, 'rgba(0,0,0,0)')
+    g.addColorStop(0.6, 'rgba(0,0,0,0.85)')
     g.addColorStop(1, 'rgba(0,0,0,1)')
     tctx.globalCompositeOperation = 'destination-out'
     tctx.fillStyle = g
-    tctx.fillRect(0, tmp.height * 0.74, tmp.width, tmp.height * 0.26)
+    tctx.fillRect(0, tmp.height * 0.64, tmp.width, tmp.height * 0.36)
   }
   ctx.drawImage(tmp, st.x, st.y, st.w, st.h)
 

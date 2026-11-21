@@ -932,7 +932,7 @@
   transition: box-shadow var(--dur) var(--ease-out);
 }
 
-.pcard__cta > span[aria-hidden] {
+.pcard__cta > span {
   display: grid;
   place-items: center;
   width: 32px;
@@ -946,7 +946,7 @@
   box-shadow: var(--shadow-accent);
 }
 
-.pcard > article:hover .pcard__cta > span[aria-hidden] {
+.pcard > article:hover .pcard__cta > span {
   transform: rotate(-45deg);
 }
 
@@ -1429,5 +1429,374 @@
   }
   .mc__prob i {
     display: none;
+  }
+}
+
+/* ── Medline cover: the rule chip ── */
+.mc__rule {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 0.75vw, 11px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+}
+
+.mc__rule b {
+  font-family: var(--font-display);
+  font-size: 2.4em;
+  line-height: 0.8;
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+.mc__rule i {
+  display: block;
+  font-style: normal;
+}
+
+/* ── Cybersecurity Challenge cover: a decision card ── */
+.cover--cyber {
+  background:
+    radial-gradient(60% 80% at 85% 15%, rgb(110 90 255 / 0.32), transparent 62%),
+    radial-gradient(60% 70% at 10% 100%, rgb(255 63 108 / 0.26), transparent 60%),
+    #0d0b16;
+  color: var(--on-dark);
+}
+
+.cy__card {
+  position: absolute;
+  left: 7%;
+  top: 14%;
+  width: min(62%, 360px);
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: transform 700ms var(--ease-out);
+}
+
+.pcard > article:hover .cy__card {
+  transform: translateY(-4px) rotate(-1deg);
+}
+
+.cy__kind {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b9a8ff;
+}
+
+.cy__text {
+  margin-top: 8px;
+  font-size: clamp(0.8rem, 0.7rem + 0.4vw, 1rem);
+  line-height: 1.35;
+  color: var(--on-dark);
+}
+
+.cy__choices {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cy__btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgb(255 255 255 / 0.25);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cy__btn--hot {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 4px rgb(255 63 108 / 0.18);
+  animation: cypulse 2.4s var(--ease-in-out) infinite;
+}
+
+@keyframes cypulse {
+  50% {
+    box-shadow: 0 0 0 9px rgb(255 63 108 / 0);
+  }
+}
+
+.cy__shield {
+  position: absolute;
+  right: 9%;
+  top: 18%;
+  width: clamp(64px, 16%, 120px);
+}
+
+.cy__shield svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.cy__shield path {
+  fill: none;
+  stroke: #b9a8ff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px rgb(150 130 255 / 0.6));
+}
+
+.cy__shield path + path {
+  stroke: var(--accent);
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  transition: stroke-dashoffset 900ms var(--ease-out) 200ms;
+}
+
+.is-visible .cy__shield path + path,
+.case-hero .cy__shield path + path {
+  stroke-dashoffset: 0;
+}
+
+.cy__level {
+  position: absolute;
+  left: 7%;
+  right: 9%;
+  bottom: 12%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+}
+
+.cy__level i {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.1);
+  overflow: hidden;
+}
+
+.cy__level i::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w);
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8f7bff, var(--accent));
+}
+
+/* ── Cycle Soundtrack cover: poster + equalizer ── */
+.cover--sound {
+  background: #050407;
+}
+
+.cover--sound img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  opacity: 0.7;
+  transition: transform 900ms var(--ease-out), opacity 600ms var(--ease-out);
+}
+
+.pcard > article:hover .cover--sound img {
+  opacity: 0.85;
+}
+
+.cover--sound::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(5 4 7 / 0.1) 30%, rgb(5 4 7 / 0.85));
+}
+
+.sc__title {
+  position: absolute;
+  right: 7%;
+  top: 9%;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 1rem + 1.4vw, 2.2rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-align: right;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 6px 30px rgb(0 0 0 / 0.5);
+}
+
+.sc__eq {
+  z-index: 1;
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 9%;
+  height: 26%;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.sc__eq span {
+  flex: 1;
+  height: 30%;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(to top, var(--accent), rgb(255 63 108 / 0.2));
+  transform-origin: bottom;
+  animation: eq 1.4s var(--ease-in-out) infinite alternate;
+  animation-delay: calc(var(--i) * -97ms);
+}
+
+@keyframes eq {
+  0% {
+    height: 18%;
+  }
+  50% {
+    height: 85%;
+  }
+  100% {
+    height: 40%;
+  }
+}
+
+.sc__score {
+  z-index: 1;
+  position: absolute;
+  left: 6%;
+  top: 9%;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.92);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.sc__score b {
+  color: var(--accent-strong);
+  margin-right: 4px;
+}
+
+.cover--plain {
+  background: linear-gradient(135deg, #f3efec, #ffe6ed);
+}
+
+.pcard--cybersecurity-challenge .pcard__index,
+.pcard--cycle-soundtrack .pcard__index {
+  -webkit-text-stroke-color: rgb(255 255 255 / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc__eq span,
+  .cy__btn--hot {
+    animation: none;
+  }
+  .sc__eq span:nth-child(3n) {
+    height: 70%;
+  }
+  .sc__eq span:nth-child(3n + 1) {
+    height: 45%;
+  }
+  .sc__eq span:nth-child(4n) {
+    height: 85%;
+  }
+}
+
+/* ── Gallery v2: whole card is one link ── */
+.pcard > article {
+  position: relative;
+}
+
+.pcard__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pcard__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+}
+
+.pcard__link:focus-visible {
+  outline: none;
+}
+
+.pcard > article:has(.pcard__link:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.pcard__cta {
+  pointer-events: none;
+}
+
+.pcard > article:hover .pcard__cta {
+  box-shadow: var(--shadow-accent);
+}
+
+.pcard__highlight {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pcard__highlight b {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+@media (min-width: 900px) {
+  .pgrid--with-feature > li:nth-child(n) {
+    grid-column: span 6;
+  }
+  .pgrid--with-feature > li.pcard--feature {
+    grid-column: span 12;
+  }
+  .pgrid--with-feature > li:nth-child(2),
+  .pgrid--with-feature > li:nth-child(5) {
+    grid-column: span 7;
+  }
+  .pgrid--with-feature > li:nth-child(3),
+  .pgrid--with-feature > li:nth-child(4) {
+    grid-column: span 5;
+  }
+  .pcard--feature > article {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  }
+  .pcard--feature .pcard__cover {
+    aspect-ratio: auto;
+    min-height: 420px;
+  }
+  .pcard--feature .pcard__title {
+    font-size: clamp(1.8rem, 1.2rem + 1.6vw, 2.6rem);
   }
 }

@@ -1,8 +1,45 @@
 .tl__filters {
+  position: sticky;
+  top: calc(var(--nav-h) + 8px);
+  z-index: 5;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px;
+  margin-bottom: 10px;
+  border-radius: var(--radius-pill);
+  background: rgb(250 248 246 / 0.88);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 0 1px rgb(14 14 16 / 0.05);
+}
+
+.tl__count {
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tl .tl__item {
+  animation: tl-in 520ms var(--ease-out) both;
+}
+
+@keyframes tl-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl .tl__item {
+    animation: none;
+  }
 }
 
 .tl__filters button {

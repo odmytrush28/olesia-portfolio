@@ -10,7 +10,7 @@ export function InnovationLab() {
       <div className="container">
         <SectionHead
           id="lab-title"
-          index="06.B"
+          index="04.B"
           label="Innovation Lab"
           title={['Ideas I want', 'to *build next.*']}
           lead="Honest status: these are concepts — not finished products. They show where my curiosity is heading."
