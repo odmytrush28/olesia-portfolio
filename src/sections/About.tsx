@@ -22,7 +22,7 @@ export function About() {
             <figure className="about__photo">
               <img
                 src={asset('images/olesia-portrait.webp')}
-                srcSet={`${asset('images/olesia-portrait-480.webp')} 480w, ${asset('images/olesia-portrait.webp')} 800w`}
+                srcSet={`${asset('images/olesia-portrait-480.webp')} 480w, ${asset('images/olesia-portrait.webp')} 800w, ${asset('images/olesia-portrait-1024.webp')} 1024w`}
                 sizes="(max-width: 899px) 90vw, 40vw"
                 width={800}
                 height={1000}

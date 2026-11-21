@@ -202,7 +202,7 @@ export const about = {
     text: 'Four degrees, a QC/QA course, and now technology and leadership training at i.c.stars.',
     evidence: 'KUL · SGH · TOMMY · i.c.stars',
   },
-  photoAlt: 'Olesia Dmytrush, professional portrait in a black blazer with arms crossed',
+  photoAlt: 'Olesia Dmytrush, professional portrait in a black blazer with arms crossed, in front of a wooden wall',
 }
 
 /* ─────────────────────── EXPERIENCE ─────────────────────── */

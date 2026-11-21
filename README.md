@@ -178,7 +178,7 @@ automatically once the list is not empty.
 | `public/hero/hero-desk-ai.webp` (+ `-1300`, `-1000`) | The aligned “AI side” of the same photo, shown through the reveal (see `design-source/README.md`) |
 | `public/hero/hero-ai-eye.webp` | Eye detail shown inside the hero “Let’s connect” button on hover |
 | `public/videos/*.mp4` + `*.webp` | AI film scenes, Cycle Soundtrack video and posters |
-| `public/images/olesia-portrait*.webp` | About photo (Cycle 60 headshot) |
+| `public/images/olesia-portrait*.webp` | About photo (professional portrait; source crop in `design-source/olesia-portrait-source.png`) |
 | `public/images/techbash/*.webp` | TechBash 2026 photos on the Cycle Soundtrack page |
 | `public/images/qa-diploma*.webp` | QC/QA diploma |
 | `public/og-image.jpg` | Link preview image (1200 × 630) |
